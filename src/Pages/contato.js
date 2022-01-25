@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Grid, Button, TextField } from '@material-ui/core/';
 
+const validateEmail = (email) => {
+    var regex = /^\S+@\S+\.\S+$/;
+    return regex.test(email)
+}
+
 const Contatos = () => {
 
     const url = 'http://localhost:5000/message'
@@ -19,7 +24,7 @@ const Contatos = () => {
 
     const sendMessage = () => {
         setValidator(false);
-        if(author.length <= 0 || content.length <= 0){
+        if(author.length <= 0 || content.length <= 0 | !validateEmail(author)){
             return setValidator(!validator)
         }
         const bodyForm = {
@@ -54,7 +59,7 @@ const Contatos = () => {
     return(
         <>
             <Grid container direction="row" xs={12}>
-                <TextField id="name" label="Name" value={author} onChange={(event)=>{setAuthor(event.target.value)}} fullWidth/>
+                <TextField id="name" label="Email" type="email" value={author} onChange={(event)=>{setAuthor(event.target.value)}} fullWidth/>
                 <TextField id="message" label="Message" value={content} onChange={(event)=>{setContent(event.target.value)}} fullWidth/>
             </Grid>
 

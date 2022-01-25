@@ -1,8 +1,7 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 import { Paper, Grid, Typography, List, makeStyles } from '@material-ui/core/';
 import Item from '../components/Item';
-import Card from '../components/Card';
+import Card from '../components/Card/Card';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -16,8 +15,17 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 const HomePage = () => {
-    const products = useSelector(state => state.products)
+    const url = 'http://localhost:5000/products'
+
+    const [products, setProducts] = useState([]);
     const classes = useStyles();
+
+    useEffect(async () => {
+        const response = await fetch(url)
+        const data = await response.json();
+        setProducts(data);
+    }, [])
+
 
     const categorys = products.map(
         category => {
@@ -27,6 +35,8 @@ const HomePage = () => {
             return container;
         }
     )
+
+    console.log(categorys);
 
     const category = categorys.map(JSON.stringify)
                     .filter(function(item, index, arr){
